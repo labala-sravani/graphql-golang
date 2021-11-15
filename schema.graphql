@@ -9,6 +9,7 @@ type Vendor {
   dps: DPS!
   schedules: [Schedule!]!
   characteristics: Characteristics
+  error: ErrorResponse
 }
 
 type TES {
@@ -37,4 +38,16 @@ type Cuisines {
 type FoodCharacteristics {
   name: String
   isVegetarian: Boolean
+}
+
+type ErrorResponse {
+  message: String
+  type: ErrorTypes
+}
+
+enum ErrorTypes {
+  VendorDoesNotDeliver
+  VendorClosed
+  InternalError
+  ServiceUnavailable
 }

@@ -26,6 +26,10 @@ func (r *characteristicsResolver) FoodCharacteristics(ctx context.Context, obj *
 
 func (r *queryResolver) Vendor(ctx context.Context, id string) (*models.Vendor, error) {
 	fmt.Println("in vendor")
+	if id == "123" {
+		fmt.Println("in error")
+		return &models.Vendor{Description: "abc", PlatformVendorId: "123", Error: models.ErrorResponse{Message: "vendor not available", Type: models.ErrorTypesVendorClosed}}, nil
+	}
 	return &models.Vendor{Description: "abc", PlatformVendorId: "123"}, nil
 }
 

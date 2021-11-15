@@ -2,6 +2,12 @@
 
 package models
 
+import (
+	"fmt"
+	"io"
+	"strconv"
+)
+
 type Cuisines struct {
 	Name   *string `json:"name"`
 	URLKey *string `json:"urlKey"`
@@ -15,4 +21,49 @@ type FoodCharacteristics struct {
 type Schedule struct {
 	ID      *string `json:"id"`
 	Weekday *string `json:"weekday"`
+}
+
+type ErrorTypes string
+
+const (
+	ErrorTypesVendorDoesNotDeliver ErrorTypes = "VendorDoesNotDeliver"
+	ErrorTypesVendorClosed         ErrorTypes = "VendorClosed"
+	ErrorTypesInternalError        ErrorTypes = "InternalError"
+	ErrorTypesServiceUnavailable   ErrorTypes = "ServiceUnavailable"
+)
+
+var AllErrorTypes = []ErrorTypes{
+	ErrorTypesVendorDoesNotDeliver,
+	ErrorTypesVendorClosed,
+	ErrorTypesInternalError,
+	ErrorTypesServiceUnavailable,
+}
+
+func (e ErrorTypes) IsValid() bool {
+	switch e {
+	case ErrorTypesVendorDoesNotDeliver, ErrorTypesVendorClosed, ErrorTypesInternalError, ErrorTypesServiceUnavailable:
+		return true
+	}
+	return false
+}
+
+func (e ErrorTypes) String() string {
+	return string(e)
+}
+
+func (e *ErrorTypes) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ErrorTypes(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ErrorTypes", str)
+	}
+	return nil
+}
+
+func (e ErrorTypes) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }

@@ -58,6 +58,11 @@ type ComplexityRoot struct {
 		MinimumOrderAmount func(childComplexity int) int
 	}
 
+	ErrorResponse struct {
+		Message func(childComplexity int) int
+		Type    func(childComplexity int) int
+	}
+
 	FoodCharacteristics struct {
 		IsVegetarian func(childComplexity int) int
 		Name         func(childComplexity int) int
@@ -80,6 +85,7 @@ type ComplexityRoot struct {
 		Characteristics  func(childComplexity int) int
 		Description      func(childComplexity int) int
 		Dps              func(childComplexity int) int
+		Error            func(childComplexity int) int
 		PlatformVendorId func(childComplexity int) int
 		Schedules        func(childComplexity int) int
 		Tes              func(childComplexity int) int
@@ -150,6 +156,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Dps.MinimumOrderAmount(childComplexity), true
 
+	case "ErrorResponse.message":
+		if e.complexity.ErrorResponse.Message == nil {
+			break
+		}
+
+		return e.complexity.ErrorResponse.Message(childComplexity), true
+
+	case "ErrorResponse.type":
+		if e.complexity.ErrorResponse.Type == nil {
+			break
+		}
+
+		return e.complexity.ErrorResponse.Type(childComplexity), true
+
 	case "FoodCharacteristics.isVegetarian":
 		if e.complexity.FoodCharacteristics.IsVegetarian == nil {
 			break
@@ -217,6 +237,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Vendor.Dps(childComplexity), true
+
+	case "Vendor.error":
+		if e.complexity.Vendor.Error == nil {
+			break
+		}
+
+		return e.complexity.Vendor.Error(childComplexity), true
 
 	case "Vendor.platformVendorId":
 		if e.complexity.Vendor.PlatformVendorId == nil {
@@ -300,6 +327,7 @@ type Vendor {
   dps: DPS!
   schedules: [Schedule!]!
   characteristics: Characteristics
+  error: ErrorResponse
 }
 
 type TES {
@@ -328,6 +356,18 @@ type Cuisines {
 type FoodCharacteristics {
   name: String
   isVegetarian: Boolean
+}
+
+type ErrorResponse {
+  message: String
+  type: ErrorTypes
+}
+
+enum ErrorTypes {
+  VendorDoesNotDeliver
+  VendorClosed
+  InternalError
+  ServiceUnavailable
 }
 `, BuiltIn: false},
 }
@@ -566,6 +606,70 @@ func (ec *executionContext) _DPS_minimumOrderAmount(ctx context.Context, field g
 	res := resTmp.(string)
 	fc.Result = res
 	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ErrorResponse_message(ctx context.Context, field graphql.CollectedField, obj *models.ErrorResponse) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "ErrorResponse",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Message, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalOString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ErrorResponse_type(ctx context.Context, field graphql.CollectedField, obj *models.ErrorResponse) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "ErrorResponse",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Type, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(models.ErrorTypes)
+	fc.Result = res
+	return ec.marshalOErrorTypes2projectSchemaᚋmodelsᚐErrorTypes(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _FoodCharacteristics_name(ctx context.Context, field graphql.CollectedField, obj *models.FoodCharacteristics) (ret graphql.Marshaler) {
@@ -1046,6 +1150,38 @@ func (ec *executionContext) _Vendor_characteristics(ctx context.Context, field g
 	res := resTmp.(*models.Characteristics)
 	fc.Result = res
 	return ec.marshalOCharacteristics2ᚖprojectSchemaᚋmodelsᚐCharacteristics(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Vendor_error(ctx context.Context, field graphql.CollectedField, obj *models.Vendor) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Vendor",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Error, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(models.ErrorResponse)
+	fc.Result = res
+	return ec.marshalOErrorResponse2projectSchemaᚋmodelsᚐErrorResponse(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
@@ -2275,6 +2411,32 @@ func (ec *executionContext) _DPS(ctx context.Context, sel ast.SelectionSet, obj 
 	return out
 }
 
+var errorResponseImplementors = []string{"ErrorResponse"}
+
+func (ec *executionContext) _ErrorResponse(ctx context.Context, sel ast.SelectionSet, obj *models.ErrorResponse) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, errorResponseImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ErrorResponse")
+		case "message":
+			out.Values[i] = ec._ErrorResponse_message(ctx, field, obj)
+		case "type":
+			out.Values[i] = ec._ErrorResponse_type(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var foodCharacteristicsImplementors = []string{"FoodCharacteristics"}
 
 func (ec *executionContext) _FoodCharacteristics(ctx context.Context, sel ast.SelectionSet, obj *models.FoodCharacteristics) graphql.Marshaler {
@@ -2469,6 +2631,8 @@ func (ec *executionContext) _Vendor(ctx context.Context, sel ast.SelectionSet, o
 				res = ec._Vendor_characteristics(ctx, field, obj)
 				return res
 			})
+		case "error":
+			out.Values[i] = ec._Vendor_error(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3191,6 +3355,20 @@ func (ec *executionContext) marshalOCuisines2ᚖprojectSchemaᚋmodelsᚐCuisine
 		return graphql.Null
 	}
 	return ec._Cuisines(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOErrorResponse2projectSchemaᚋmodelsᚐErrorResponse(ctx context.Context, sel ast.SelectionSet, v models.ErrorResponse) graphql.Marshaler {
+	return ec._ErrorResponse(ctx, sel, &v)
+}
+
+func (ec *executionContext) unmarshalOErrorTypes2projectSchemaᚋmodelsᚐErrorTypes(ctx context.Context, v interface{}) (models.ErrorTypes, error) {
+	var res models.ErrorTypes
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOErrorTypes2projectSchemaᚋmodelsᚐErrorTypes(ctx context.Context, sel ast.SelectionSet, v models.ErrorTypes) graphql.Marshaler {
+	return v
 }
 
 func (ec *executionContext) marshalOFoodCharacteristics2ᚕᚖprojectSchemaᚋmodelsᚐFoodCharacteristics(ctx context.Context, sel ast.SelectionSet, v []*models.FoodCharacteristics) graphql.Marshaler {
