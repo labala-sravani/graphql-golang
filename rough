@@ -1,0 +1,78 @@
+package graph
+
+// This file will be automatically regenerated based on the schema, any resolver implementations
+// will be copied through when generating and any unknown code will be moved to the end.
+
+import (
+	"context"
+	"fmt"
+	"projectSchema/generated"
+	"projectSchema/models"
+)
+
+func (r *queryResolver) Vendor(ctx context.Context, id string) (*models.Vendor, error) {
+	fmt.Print("-------------\n\n\n\nin vendor\n\n\n---------------")
+	return &models.Vendor{Description: "abc", PlatformVendorId: "123"}, nil
+}
+
+func (r *vendorResolver) Tes(ctx context.Context, obj *models.Vendor) (*models.TES, error) {
+	fmt.Print("-------------\n\n\n\nin tes\n\n\n---------------")
+	return &models.TES{MinimumDeliverTime: "123"}, nil
+}
+
+func (r *vendorResolver) Dps(ctx context.Context, obj *models.Vendor) (*models.DPS, error) {
+	fmt.Print("-------------- \n\n\n in dps \n\n\n -------------")
+	return &models.DPS{MinimumOrderAmount: "dps"}, nil
+}
+
+// Query returns generated.QueryResolver implementation.
+func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
+
+// Vendor returns generated.VendorResolver implementation.
+func (r *Resolver) Vendor() generated.VendorResolver { return &vendorResolver{r} }
+
+type queryResolver struct{ *Resolver }
+type vendorResolver struct{ *Resolver }
+///////////////////////////////////
+package graph
+
+// This file will be automatically regenerated based on the schema, any resolver implementations
+// will be copied through when generating and any unknown code will be moved to the end.
+
+import (
+	"context"
+	"fmt"
+	"projectSchema/generated"
+	"projectSchema/models"
+)
+
+func (r *queryResolver) Vendor(ctx context.Context, id string) (*models.Vendor, error) {
+	fmt.Print("-------------\n\n\n\nin vendor\n\n\n---------------")
+	return &models.Vendor{Description: "abc", PlatformVendorId: "123"}, nil
+}
+
+func (r *vendorResolver) Tes(ctx context.Context, obj *models.Vendor) (*models.TES, error) {
+	fmt.Print("-------------\n\n\n\nin tes\n\n\n---------------")
+	return &models.TES{MinimumDeliverTime: "123"}, nil
+}
+
+func (r *vendorResolver) Dps(ctx context.Context, obj *models.Vendor) (*models.DPS, error) {
+	fmt.Print("-------------- \n\n\n in dps \n\n\n -------------")
+	return &models.DPS{MinimumOrderAmount: "dps"}, nil
+}
+
+func (r *vendorResolver) Schedules(ctx context.Context, obj *models.Vendor) ([]*models.Schedule, error) {
+	fmt.Print("-------------- \n\n\n in schedule \n\n\n -------------")
+	id := "123"
+	weekday := "monday"
+	return []*models.Schedule{{ID: &id, Weekday: &weekday}}, nil
+}
+
+// Query returns generated.QueryResolver implementation.
+func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
+
+// Vendor returns generated.VendorResolver implementation.
+func (r *Resolver) Vendor() generated.VendorResolver { return &vendorResolver{r} }
+
+type queryResolver struct{ *Resolver }
+type vendorResolver struct{ *Resolver }

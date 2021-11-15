@@ -1,0 +1,13 @@
+exec:
+  filename: generated/exec.go
+model:
+  filename: models/generated.go
+
+autobind:
+  - projectSchema/models
+
+# Where should the resolver implementations go?
+resolver:
+  layout: follow-schema
+  dir: graph
+  package: graph

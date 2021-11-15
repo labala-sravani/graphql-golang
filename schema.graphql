@@ -1,0 +1,40 @@
+type Query {
+  Vendor(id: ID!): Vendor
+}
+
+type Vendor {
+  platformVendorId: ID!
+  description: String!
+  tes: TES!
+  dps: DPS!
+  schedules: [Schedule!]!
+  characteristics: Characteristics
+}
+
+type TES {
+  minimumDeliverTime: String!
+}
+
+type DPS {
+  minimumOrderAmount: String!
+}
+
+type Schedule {
+  id: ID
+  weekday: String
+}
+
+type Characteristics {
+  cuisines: [Cuisines]
+  foodCharacteristics: [FoodCharacteristics]
+}
+
+type Cuisines {
+  name: String
+  urlKey: String
+}
+
+type FoodCharacteristics {
+  name: String
+  isVegetarian: Boolean
+}
